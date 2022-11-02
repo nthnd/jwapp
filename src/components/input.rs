@@ -7,6 +7,7 @@ pub fn Input<G: Html>(cx: Scope) -> View<G> {
     let app_state = use_context::<AppState>(cx);
 
     let current_item = create_signal(cx, String::new());
+    let characters_typed = create_memo(cx, move || current_item.clone().get().len());
     let add = move |_| {
         if !current_item.get().trim().is_empty() {
             let now = Utc::now();
@@ -21,7 +22,12 @@ pub fn Input<G: Html>(cx: Scope) -> View<G> {
 
     view! {
        cx,
-       textarea( maxlength = 500, bind:value = current_item ) {}
-       button( on:click = add ) { "Add" }
+        div(class="input-area"){
+            textarea(maxlength = 500, bind:value = current_item) {}
+            div(class="input-menu"){
+                button(on:click = add, class="btn-add" ) { "Add" }
+                p() { (characters_typed.get()) "/500"}
+            }
+        }
     }
 }

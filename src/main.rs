@@ -51,7 +51,7 @@ fn main() {
         view! {
             cx,
             nav() {
-                a(){"Journal"}
+                a(href="#"){"Journal"}
                 Theme()
             }
             Input()
