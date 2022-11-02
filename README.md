@@ -9,7 +9,7 @@ Build from source
 ```sh
 git clone https://github.com/nate-sys/sycamore-journal
 ```
-or checkout the [Live Demo](https://github.com/nate-sys/jwapp)
+or checkout the [Live Demo](https://nate-sys.github.io/jwapp)
 
 ## Dendencies
 * Rust (Cargo)
