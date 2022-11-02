@@ -1,0 +1,33 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    --bg: #ffffff;
+    --fg: #323232;
+
+    background-color: var(--bg);
+    color: var(--altfg);
+
+    max-width: 70ch;
+    margin: auto;
+    padding: 1em ;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1, h2, h3 {
+    color: var(--fg);
+}
+
+nav {
+    position: sticky;
+    top: 0;
+    height:3em;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+

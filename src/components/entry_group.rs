@@ -20,7 +20,7 @@ pub fn EntryGroup<G: Html>(cx: Scope, date: String) -> View<G> {
 
     view! {
         cx,
-        h1 { (date.clone()) }
+        h1 { (date.clone().replace('-', " ").replace("UTC", "")) }
         Indexed(iterable = entries,
             view = |cx, x| view!{ cx,
                 Entry(time= x.time, value= x.value)

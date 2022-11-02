@@ -1,6 +1,8 @@
 mod state;
+mod theme;
 
 use state::AppState;
+use theme::Theme;
 
 mod components;
 use components::input::Input;
@@ -41,10 +43,29 @@ fn main() {
                 .unwrap();
         });
 
+        let should_render = create_memo(cx, move || {
+            let app_state = use_context::<AppState>(cx);
+            !app_state.entry_groups.get().is_empty()
+        });
+
         view! {
             cx,
+            nav() {
+                a(){"Journal"}
+                Theme()
+            }
             Input()
-            List()
+            (if *should_render.get() {
+                view!{
+                    cx,
+                    List()
+                }
+            }else{
+                view!{
+                    cx,
+                    p(class="list-group-empty") {"Start journaling..."}
+                }
+            })
         }
     });
 }
