@@ -23,7 +23,7 @@ pub fn Input<G: Html>(cx: Scope) -> View<G> {
     view! {
        cx,
         div(class="input-area"){
-            textarea(maxlength = 500, bind:value = current_item) {}
+            textarea(maxlength = 500, placeholder= "What's on your mind?", bind:value = current_item) {}
             div(class="input-menu"){
                 button(on:click = add, class="btn-add" ) { "Add" }
                 p() { (characters_typed.get()) "/500"}
