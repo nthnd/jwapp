@@ -1,14 +1,12 @@
+mod components;
 mod state;
 mod theme;
 
 use state::AppState;
-use theme::Theme;
 
-mod components;
-use components::input::Input;
-use components::list::List;
-
+use components::{input::Input, list::List, modal::Modal};
 use sycamore::prelude::*;
+use theme::Theme;
 use web_sys::{console, window};
 
 const LOCAL_STORAGE_KEY: &str = "journal_entries_sycamore";
@@ -48,12 +46,23 @@ fn main() {
             !app_state.entry_groups.get().is_empty()
         });
 
+        let should_show_help = create_signal(cx, true);
+        let show_help = |_| {
+            should_show_help.set(true);
+        };
         view! {
             cx,
             nav() {
                 a(href="#"){"Jwapp"}
-                Theme()
+                div(class="nav-btns"){
+                    button(on:click=show_help, class="btn-help"){"Help"}
+                    Theme()
+                }
+
             }
+
+            Modal(visibility = should_show_help, help = true)
+
             Input()
             (if *should_render.get() {
                 view!{

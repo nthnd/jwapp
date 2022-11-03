@@ -5,18 +5,13 @@ fn EntryLine<G: Html>(cx: Scope, line: String) -> View<G> {
     let mut line = line.clone();
     if line.starts_with("# ") {
         line = line.replace("# ", "");
-        view! {
-            cx,
-            h3 {
-                (line.clone())
-            }
+        view! { cx,
+            h3 { (line.clone()) }
         }
     } else {
         view! {
             cx,
-            p{
-                (line.clone())
-            }
+            p{ (line.clone()) }
         }
     }
 }
@@ -32,7 +27,7 @@ pub fn Entry<G: Html>(cx: Scope, time: String, value: String) -> View<G> {
     );
     view! { cx,
         div(class="entry"){
-            p(class="entry-time") { (time.clone()) }
+            p(class="entry-time") { "at "(time.clone()) }
             Indexed(iterable = &lines, view = |cx, line|
                 view!{cx,
                     EntryLine(line = line)

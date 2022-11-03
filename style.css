@@ -43,6 +43,11 @@ nav > a {
 
 /* journal stuff ------------------------------------------------  */
 
+.nav-btns {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
 .list-group {
     display: grid;
     grid-gap: 2em;
@@ -58,6 +63,15 @@ nav > a {
     grid-gap: 1em;
     padding: 1em 0;
 
+}
+button {
+    cursor: pointer;
+
+    border: none;
+    border-radius: 1ch;
+
+    padding: 1ch 3ch;
+    font: inherit;
 }
 textarea {
     appearance: none;
@@ -85,22 +99,45 @@ textarea:focus {
     align-items: center;
 }
 
-.btn-add {
-    cursor: pointer;
+.btn-help { 
+    font-weight: bold;
+    color: 1px solid var(--altfg);
+    background-color: var(--bg);
+}
 
-    border: none;
-    border-radius: 1ch;
 
-    padding: 1ch 3ch;
-    font: inherit;
+.btn-add, .btn-modal {
 
     background-color: var(--accent);
     color: #ffffff;
     transition: transform 0.1s ease;
 }
-.btn-add:hover{
+.btn-add:hover, .btn-modal:hover{
     transform: scale(1.05);
 }
 
+.modal{
+    display: block;
+    z-index: 2;
 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    background-color: #000000ba;
+       
+    display: grid;
+    place-content: center;
+}
 
+.modal-content {
+    background-color: var(--bg);
+    padding: 2em;
+    border-radius: 1ch;
+    display: grid;
+    grid-gap: 1em;
+
+    max-width: 50ch;
+}
