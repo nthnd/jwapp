@@ -4,7 +4,11 @@ mod theme;
 
 use state::AppState;
 
-use components::{input::Input, list::List, modal::Modal};
+use components::{
+    input::Input,
+    list::List,
+    modal::{HelpModal, Modal},
+};
 use sycamore::prelude::*;
 use theme::Theme;
 use web_sys::{console, window};
@@ -61,17 +65,17 @@ fn main() {
 
             }
 
-            Modal(visibility = should_show_help, help = true)
+            Modal(visibility = should_show_help) {
+                HelpModal()
+            }
 
             Input()
             (if *should_render.get() {
-                view!{
-                    cx,
+                view!{ cx,
                     List()
                 }
             }else{
-                view!{
-                    cx,
+                view!{ cx,
                     p(class="list-group-empty") {"Start journaling..."}
                 }
             })
