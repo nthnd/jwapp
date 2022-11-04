@@ -14,10 +14,23 @@ use theme::Theme;
 use web_sys::{console, window};
 
 const ENTRY_KEY: &str = "journal_entries_sycamore";
+const FIRST_KEY: &str = "journal_first_time_sycamore";
 
 fn main() {
     sycamore::render(|cx| {
         let app_state = AppState {
+            first_time: {
+                let storage = window().unwrap().local_storage().unwrap().unwrap();
+                if let Ok(Some(e)) = storage.get_item(FIRST_KEY) {
+                    serde_json::from_str(&e).unwrap_or_else(|e| {
+                        console::error_1(&e.to_string().into());
+                        true
+                    })
+                } else {
+                    console::log_1(&"No items in local storage".into());
+                    true
+                }
+            },
             entry_groups: {
                 let storage = window().unwrap().local_storage().unwrap().unwrap();
                 if let Ok(Some(e)) = storage.get_item(ENTRY_KEY) {
@@ -52,10 +65,20 @@ fn main() {
             !app_state.entry_groups.get().is_empty()
         });
 
-        let should_show_help = create_signal(cx, false);
+        let should_show_help = create_signal(cx, {
+            let storage = window().unwrap().local_storage().unwrap().unwrap();
+            let app_state = use_context::<AppState>(cx);
+            let value = app_state.first_time;
+            storage
+                .set_item(FIRST_KEY, &serde_json::to_string(&false).unwrap())
+                .unwrap();
+            value
+        });
+
         let show_help = |_| {
             should_show_help.set(true);
         };
+
         view! {
             cx,
             nav() {

@@ -11,14 +11,15 @@ pub struct EntryData {
 
 #[derive(Serialize, Deserialize, Debug, Clone, Eq, PartialEq)]
 pub struct AppState {
+    pub first_time: bool,
     pub entry_groups: RcSignal<HashMap<String, RcSignal<Vec<EntryData>>>>,
 }
 impl AppState {
     pub fn insert_with_date(&self, date: String, entry: EntryData) {
         self.entry_groups
             .modify()
-            .entry(date.clone())
-            .or_insert(create_rc_signal(Vec::new()))
+            .entry(date)
+            .or_insert_with(|| create_rc_signal(Vec::new()))
             .modify()
             .insert(0, entry);
     }

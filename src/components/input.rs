@@ -7,7 +7,7 @@ pub fn Input<G: Html>(cx: Scope) -> View<G> {
     let app_state = use_context::<AppState>(cx);
 
     let current_item = create_signal(cx, String::new());
-    let characters_typed = create_memo(cx, move || current_item.clone().get().len());
+    let characters_typed = create_memo(cx, move || (*current_item.get()).len());
     let add = move |_| {
         if !current_item.get().trim().is_empty() {
             let now = Utc::now();
