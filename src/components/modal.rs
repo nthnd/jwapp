@@ -40,3 +40,14 @@ pub fn HelpModal<G: Html>(cx: Scope) -> View<G> {
         p { "Prefix a line with \"# \" to make it a heading." }
     }
 }
+
+#[component(inline_props)]
+pub fn EditModal<'a, G: Html>(cx: Scope, value: RcSignal<String>) -> View<G> {
+    let value = create_ref(cx, value);
+    view! {
+        cx,
+        div(class="input-area"){
+            textarea(maxlength=500, bind:value = value )
+        }
+    }
+}

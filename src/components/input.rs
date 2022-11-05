@@ -1,6 +1,7 @@
 use crate::{state::EntryData, AppState};
 use chrono::Utc;
 use sycamore::prelude::*;
+use uuid::Uuid;
 
 #[component]
 pub fn Input<G: Html>(cx: Scope) -> View<G> {
@@ -12,10 +13,11 @@ pub fn Input<G: Html>(cx: Scope) -> View<G> {
         if !current_item.get().trim().is_empty() {
             let now = Utc::now();
             let entry_data = EntryData {
-                time: now.format("%H:%M").to_string(),
-                value: (*current_item.get()).clone(),
+                id: Uuid::new_v4(),
+                time: now.time(),
+                value: create_rc_signal_from_rc(current_item.get()),
             };
-            app_state.insert_with_date(now.date().to_string(), entry_data);
+            app_state.insert_with_date(now.date_naive(), entry_data);
             current_item.modify().clear();
         }
     };

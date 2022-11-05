@@ -1,30 +1,25 @@
+use chrono::NaiveDate;
 use sycamore::prelude::*;
 
 use crate::components::entry::Entry;
 use crate::state::AppState;
 
 #[component(inline_props)]
-pub fn EntryGroup<G: Html>(cx: Scope, date: String) -> View<G> {
+pub fn EntryGroup<G: Html>(cx: Scope, date: NaiveDate) -> View<G> {
     let app_state = use_context::<AppState>(cx);
-    let cloned_date = date.clone();
+    let date_str = date.format("%A %b %e, %Y");
 
     let entries = create_memo(cx, move || {
-        (*app_state
-            .entry_groups
-            .get()
-            .get(&cloned_date)
-            .unwrap()
-            .get())
-        .clone()
+        (*app_state.entry_groups.get().get(&date).unwrap().get()).clone()
     });
 
     view! {
         cx,
         section(class="entry-group"){
-            h1 { (date.clone().replace('-', " ").replace("UTC", "")) }
+            h1 { (date_str) }
             Indexed(iterable = entries,
                 view = |cx, x| view!{ cx,
-                Entry(time= x.time, value= x.value)
+                Entry(entry_data = x)
                 })
         }
     }

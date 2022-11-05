@@ -56,6 +56,9 @@ nav > a {
 .entry-time {
     color: var(--altaccent);
 }
+.entry-content:hover {
+    cursor: pointer;
+}
 .input-area {
     display: grid;
     grid-template-columns:  1fr;
@@ -98,7 +101,6 @@ textarea:focus {
     justify-content: space-between;
     align-items: center;
 }
-
 .btn-help { 
     font-weight: bold;
     color: 1px solid var(--altfg);
