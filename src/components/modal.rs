@@ -13,17 +13,17 @@ pub fn Modal<'a, G: Html>(cx: Scope<'a>, props: ModalProps<'a, G>) -> View<G> {
     let hide = |_| visibility.set(false);
     let style = create_memo(cx, move || {
         if !*visibility.get() {
-            "visibility: hidden;"
+            "display: none;"
         } else {
-            "visibility: visible;"
+            "display: grid;"
         }
     });
     view! {
         cx,
         div(class="modal", style= style) {
             div(class="modal-content"){
+                (children)
                 div(class="modal-controls") {
-                    (children)
                     button(class="btn-modal", on:click=hide){ "back" }
                 }
             }
@@ -36,11 +36,11 @@ pub fn HelpModal<G: Html>(cx: Scope) -> View<G> {
     view! {
         cx,
         h2 {"How to use Jwapp"}
-        ul{
-            li { "Simply type in the textarea and click \"Add\" to add an entry. Your entries will be sorted and organized by time." }
-            li { "Prefix a line with \"# \" to make it a heading." }
-            li { "Double click on an entry to edit it." }
-        }
+        li { "Simply type in the textarea and click \"Add\" to add an entry. Your entries will be sorted and organized by time." }
+        li { "Double click on an entry to edit it." }
+        li { "Prefix a line with \"# \" to make it a heading." }
+        li { "Surround anything within a paragraph with \"*\" to make it bold. " }
+        li { "Surround anything within a paragraph with \"_\" to italicize it. " }
     }
 }
 
@@ -52,9 +52,7 @@ pub fn EditModal<'a, G: Html>(cx: Scope, value: RcSignal<String>) -> View<G> {
     };
     view! {
         cx,
-        div(class="input-area"){
-            textarea(maxlength=500, bind:value = v )
-            button(class="btn-save",on:click=save) { "Save" }
-        }
+        textarea(class="edit-textarea", maxlength=500, bind:value = v)
+        button(class="btn-save",on:click=save) { "Save" }
     }
 }

@@ -1,9 +1,46 @@
+use std::collections::HashSet;
+
+use sycamore::builder::prelude::*;
 use sycamore::prelude::*;
 
 use crate::state::{AppState, EntryData};
 
 use super::modal::{EditModal, Modal};
 
+fn format_line(line: &String) -> String {
+    let mut tag_map: HashSet<char> = HashSet::new();
+    let mut new_line = String::new();
+    for c in line.chars() {
+        match c {
+            '*' => {
+                if tag_map.insert(c) {
+                    new_line.push_str("<b>")
+                } else {
+                    new_line.push_str("</b>");
+                    tag_map.remove(&c);
+                }
+            }
+            '_' => {
+                if tag_map.insert(c) {
+                    new_line.push_str("<i>")
+                } else {
+                    new_line.push_str("</i>");
+                    tag_map.remove(&c);
+                }
+            }
+
+            _ => new_line.push(c),
+        }
+    }
+    for c in tag_map {
+        new_line.push_str(match c {
+            '*' => "</b>",
+            '_' => "</i>",
+            _ => "",
+        });
+    }
+    new_line
+}
 #[component(inline_props)]
 fn EntryLine<G: Html>(cx: Scope, line: String) -> View<G> {
     let mut line = line;
@@ -12,11 +49,13 @@ fn EntryLine<G: Html>(cx: Scope, line: String) -> View<G> {
         view! { cx,
             h3 { (line.clone()) }
         }
-    } else {
-        view! {
-            cx,
-            p{ (line.clone()) }
+    } else if line.starts_with("## ") {
+        line = line.replace("## ", "");
+        view! { cx,
+            h4 { (line.clone()) }
         }
+    } else {
+        p().dangerously_set_inner_html(format_line(&line)).view(cx)
     }
 }
 

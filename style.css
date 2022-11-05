@@ -56,10 +56,9 @@ li {
 }
 .btn-delete {
     padding: 0.2em 1em;
-    visibility: hidden;
     background-color: transparent;
     color: var(--danger);
-    opacity: 0.8;
+    opacity: 0.4;
     font-weight: bold;
 } 
 .btn-delete:hover{
@@ -69,9 +68,6 @@ li {
     display: flex;
     gap: 1em;
     align-items: center;
-}
-.entry-top:hover > .btn-delete {
-    visibility: visible;
 }
 .entry-time {
     color: var(--altaccent);
@@ -163,8 +159,13 @@ textarea:focus {
     background-color: var(--bg);
     padding: 2em;
     border-radius: 1ch;
+
     display: grid;
     grid-gap: 1em;
+    grid-template-columns: 1fr;
 
-    max-width: 50ch;
+    max-width: 60ch;
+}
+.edit-textarea {
+    width: clamp(30ch, 100vw, 50ch);
 }
