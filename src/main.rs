@@ -49,6 +49,10 @@ fn main() {
         create_effect(cx, move || {
             let storage = window().unwrap().local_storage().unwrap().unwrap();
             let app_state = use_context::<AppState>(cx);
+            app_state
+                .entry_groups
+                .modify()
+                .retain(|_, v| !v.get().is_empty());
             for group in app_state.entry_groups.get().iter() {
                 group.1.track();
             }

@@ -5,9 +5,6 @@
 /* General Html Stuff ------------------------------------------------  */
 
 body {
-    --bg: #ffffff;
-    --fg: #323232;
-
     background-color: var(--bg);
     color: var(--altfg);
 
@@ -15,6 +12,7 @@ body {
     margin: auto;
     padding: 1em ;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5;
 }
 
 h1, h2, h3 {
@@ -41,6 +39,10 @@ nav > a {
     font-weight: bold;
 }
 
+li {
+    margin-bottom: 1ch;
+}
+
 /* journal stuff ------------------------------------------------  */
 
 .nav-btns {
@@ -52,9 +54,29 @@ nav > a {
     display: grid;
     grid-gap: 2em;
 }
-
+.btn-delete {
+    padding: 0.2em 1em;
+    visibility: hidden;
+    background-color: transparent;
+    color: var(--danger);
+    opacity: 0.8;
+    font-weight: bold;
+} 
+.btn-delete:hover{
+    opacity: 1;
+}
+.entry-top {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+.entry-top:hover > .btn-delete {
+    visibility: visible;
+}
 .entry-time {
     color: var(--altaccent);
+    margin-top: 0;
+    margin-bottom: 0;
 }
 .entry-content:hover {
     cursor: pointer;
@@ -107,14 +129,17 @@ textarea:focus {
     background-color: var(--bg);
 }
 
-
-.btn-add, .btn-modal {
+.btn-modal{
+    background-color: var( --altbg );
+    color: var( --altfg );
+}
+.btn-add, .btn-save{
 
     background-color: var(--accent);
     color: #ffffff;
     transition: transform 0.1s ease;
 }
-.btn-add:hover, .btn-modal:hover{
+.btn-add:hover,  .btn-save:hover{
     transform: scale(1.05);
 }
 

@@ -37,6 +37,7 @@ pub fn Theme<G: Html>(cx: Scope) -> View<G> {
                 --border: #cccccc;
                 --accent: #54c367;
                 --altaccent: #adadce;
+                --danger: #ef448d;
             );
         }
         // dark
@@ -51,6 +52,7 @@ pub fn Theme<G: Html>(cx: Scope) -> View<G> {
                 --border: #676a70;
                 --accent: #34934a;
                 --altaccent: #4b4d74;
+                --danger: #ef448d;
             );
         }
     });

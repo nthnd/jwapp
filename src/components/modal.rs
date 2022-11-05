@@ -24,7 +24,7 @@ pub fn Modal<'a, G: Html>(cx: Scope<'a>, props: ModalProps<'a, G>) -> View<G> {
             div(class="modal-content"){
                 div(class="modal-controls") {
                     (children)
-                    button(class="btn-modal", on:click=hide){ "Ok" }
+                    button(class="btn-modal", on:click=hide){ "back" }
                 }
             }
         }
@@ -36,18 +36,25 @@ pub fn HelpModal<G: Html>(cx: Scope) -> View<G> {
     view! {
         cx,
         h2 {"How to use Jwapp"}
-        p { "Simply type in the textarea and click \"Add\" to add an entry. Your entries will be sorted and organized by time." }
-        p { "Prefix a line with \"# \" to make it a heading." }
+        ul{
+            li { "Simply type in the textarea and click \"Add\" to add an entry. Your entries will be sorted and organized by time." }
+            li { "Prefix a line with \"# \" to make it a heading." }
+            li { "Double click on an entry to edit it." }
+        }
     }
 }
 
 #[component(inline_props)]
 pub fn EditModal<'a, G: Html>(cx: Scope, value: RcSignal<String>) -> View<G> {
-    let value = create_ref(cx, value);
+    let v = create_signal_from_rc(cx, value.get());
+    let save = move |_| {
+        value.set_rc(v.get());
+    };
     view! {
         cx,
         div(class="input-area"){
-            textarea(maxlength=500, bind:value = value )
+            textarea(maxlength=500, bind:value = v )
+            button(class="btn-save",on:click=save) { "Save" }
         }
     }
 }

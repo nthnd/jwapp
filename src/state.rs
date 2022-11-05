@@ -26,9 +26,10 @@ impl AppState {
             .modify()
             .insert(0, entry);
     }
-    pub fn delete_entry(&mut self, id: Uuid) {
+    pub fn delete_entry(&self, id: Uuid) {
         self.entry_groups
-            .modify()
-            .retain(|_, v| v.get().iter().any(|x| x.id == id));
+            .get()
+            .iter()
+            .for_each(|x| x.1.modify().retain(|y| y.id != id));
     }
 }
