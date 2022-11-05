@@ -16,6 +16,6 @@ or checkout the [Live Demo](https://nate-sys.github.io/jwapp)
 * [Sycamore](sycamore-rs.netlify.app)
 
 ## Roadmap
-`[ ]` Edit and delete previous journal entries  
-`[ ]` Minimal markdown syntax
+- [x] Edit and delete previous journal entries  
+- [ ] Minimal markdown syntax
 
