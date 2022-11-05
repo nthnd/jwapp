@@ -20,7 +20,7 @@ fn format_line(line: &String) -> String {
                     tag_map.remove(&c);
                 }
             }
-            '_' => {
+            '-' => {
                 if tag_map.insert(c) {
                     new_line.push_str("<i>")
                 } else {
@@ -28,14 +28,22 @@ fn format_line(line: &String) -> String {
                     tag_map.remove(&c);
                 }
             }
-
+            '_' => {
+                if tag_map.insert(c) {
+                    new_line.push_str("<u>")
+                } else {
+                    new_line.push_str("</u>");
+                    tag_map.remove(&c);
+                }
+            }
             _ => new_line.push(c),
         }
     }
     for c in tag_map {
         new_line.push_str(match c {
             '*' => "</b>",
-            '_' => "</i>",
+            '-' => "</i>",
+            '_' => "</u>",
             _ => "",
         });
     }
