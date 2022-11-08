@@ -22,6 +22,7 @@ pub fn Input<G: Html>(cx: Scope) -> View<G> {
             };
             app_state.insert_with_date(now.date_naive(), entry_data);
             current_item.modify().clear();
+            tags.modify().clear();
         }
     };
 
