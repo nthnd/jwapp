@@ -10,7 +10,22 @@ pub fn EntryGroup<G: Html>(cx: Scope, date: NaiveDate) -> View<G> {
     let date_str = date.format("%A %b %e, %Y");
 
     let entries = create_memo(cx, move || {
-        (*app_state.entry_groups.get().get(&date).unwrap().get()).clone()
+        let mut es = (*app_state.entry_groups.get().get(&date).unwrap().get()).clone();
+        if let Some(filter) = app_state.filter.get().as_ref() {
+            es = es
+                .into_iter()
+                .filter(|x| {
+                    x.tags
+                        .get()
+                        .split_whitespace()
+                        .collect::<Vec<&str>>()
+                        .iter()
+                        .any(|&w| &w.to_string() == filter)
+                })
+                .collect();
+        } else {
+        }
+        es
     });
 
     view! {

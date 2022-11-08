@@ -31,6 +31,7 @@ fn main() {
                     true
                 }
             },
+            filter: create_rc_signal(None),
             entry_groups: {
                 let storage = window().unwrap().local_storage().unwrap().unwrap();
                 if let Ok(Some(e)) = storage.get_item(ENTRY_KEY) {
@@ -82,12 +83,22 @@ fn main() {
         let show_help = |_| {
             should_show_help.set(true);
         };
+        let filter_msg = create_memo(cx, move || {
+            let app_state = use_context::<AppState>(cx);
+            let x = (*app_state.filter.get()).clone();
+            if let Some(filter) = x {
+                format!("filter: {filter}")
+            } else {
+                String::new()
+            }
+        });
 
         view! {
             cx,
             nav() {
                 a(href="#"){"Jwapp"}
                 div(class="nav-btns"){
+                    span { (filter_msg.get())}
                     button(on:click=show_help, class="btn-help"){"Help"}
                     Theme()
                 }

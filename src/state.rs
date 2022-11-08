@@ -15,6 +15,7 @@ pub struct EntryData {
 
 #[derive(Serialize, Deserialize, Debug, Clone, Eq, PartialEq)]
 pub struct AppState {
+    pub filter: RcSignal<Option<String>>,
     pub first_time: bool,
     pub entry_groups: RcSignal<HashMap<NaiveDate, RcSignal<Vec<EntryData>>>>,
 }

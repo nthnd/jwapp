@@ -8,6 +8,27 @@ use crate::state::{AppState, EntryData};
 use super::modal::{EditModal, Modal};
 
 #[component(inline_props)]
+fn Tag<G: Html>(cx: Scope, tag: String) -> View<G> {
+    let tag = create_ref(cx, tag);
+    let app_state = use_context::<AppState>(cx);
+    let apply_filter = move |_| {
+        if let Some(filter) = app_state.filter.get().as_ref() {
+            if filter == &tag.clone() {
+                app_state.filter.set(None)
+            } else {
+                app_state.filter.set(Some(tag.clone()))
+            }
+        } else {
+            app_state.filter.set(Some(tag.clone()))
+        }
+    };
+    view! {
+        cx,
+        div(class="entry-tag", on:click=apply_filter){(tag.clone())}
+    }
+}
+
+#[component(inline_props)]
 fn Tags<G: Html>(cx: Scope, tags: RcSignal<String>) -> View<G> {
     let tags = create_ref(cx, tags);
     let tags_vec = create_signal(
@@ -21,7 +42,7 @@ fn Tags<G: Html>(cx: Scope, tags: RcSignal<String>) -> View<G> {
         cx,
         div(class="container-entry-tags"){
             Indexed(iterable = tags_vec, view = |cx,x| view!{cx,
-                div(class="entry-tag"){ (x) }
+                Tag(tag=x)
             })
         }
     }
