@@ -109,10 +109,23 @@ textarea {
     padding: 1em;
 }
 
-textarea:focus {
+input[type="text"] {
+    appearance: none;
+    outline: none;
+
+    border: 1px solid transparent;
+    border-radius: 1ch;
+    background-color: var(--altbg);
+    color: var(--fg);
+    font: inherit;
+    padding: 0.2em 1em;
+
+}
+textarea:focus, input[type="text"]:focus {
     background-color: transparent; 
     border-color: var(--border);
 }
+
 
 .input-menu {
     display: flex;
@@ -169,3 +182,18 @@ textarea:focus {
 .edit-textarea {
     width: clamp(30ch, 100vw, 50ch);
 }
+
+.container-entry-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1ch;
+}
+.entry-tag {
+    font-size: .8em;
+    font-weight: bold;
+    color: var(--bg);
+    background-color: var(--altfg);
+    padding: 0 1ch;
+    border-radius: 1ch;
+}
+

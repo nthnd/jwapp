@@ -7,6 +7,26 @@ use crate::state::{AppState, EntryData};
 
 use super::modal::{EditModal, Modal};
 
+#[component(inline_props)]
+fn Tags<G: Html>(cx: Scope, tags: RcSignal<String>) -> View<G> {
+    let tags = create_ref(cx, tags);
+    let tags_vec = create_signal(
+        cx,
+        tags.get()
+            .split_whitespace()
+            .map(str::to_string)
+            .collect::<Vec<String>>(),
+    );
+    view! {
+        cx,
+        div(class="container-entry-tags"){
+            Indexed(iterable = tags_vec, view = |cx,x| view!{cx,
+                div(class="entry-tag"){ (x) }
+            })
+        }
+    }
+}
+
 fn format_line(line: &String) -> String {
     let mut tag_map: HashSet<char> = HashSet::new();
     let mut new_line = String::new();
@@ -49,6 +69,7 @@ fn format_line(line: &String) -> String {
     }
     new_line
 }
+
 #[component(inline_props)]
 fn EntryLine<G: Html>(cx: Scope, line: String) -> View<G> {
     let mut line = line;
@@ -87,6 +108,7 @@ pub fn Entry<G: Html>(cx: Scope, entry_data: EntryData) -> View<G> {
                 p(class="entry-time") { (time)}
                 button(on:click=delete, class="btn-delete") { "delete" }
             }
+            Tags(tags=entry_data.tags.clone())
             div(on:dblclick = edit, class="entry-content"){
                 Indexed(iterable = lines, view = |cx, line|
                     view!{cx,
@@ -94,7 +116,7 @@ pub fn Entry<G: Html>(cx: Scope, entry_data: EntryData) -> View<G> {
                     })
             }
             Modal(visibility=editing) {
-                EditModal(value=entry_data.value.clone())
+                EditModal(id=entry_data.id)
             }
         }
     }

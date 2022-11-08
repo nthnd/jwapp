@@ -1,4 +1,7 @@
 use sycamore::prelude::*;
+use uuid::Uuid;
+
+use crate::state::AppState;
 
 #[derive(Prop)]
 pub struct ModalProps<'a, G: Html> {
@@ -35,24 +38,31 @@ pub fn Modal<'a, G: Html>(cx: Scope<'a>, props: ModalProps<'a, G>) -> View<G> {
 pub fn HelpModal<G: Html>(cx: Scope) -> View<G> {
     view! {
         cx,
-        h2 {"How to use Jwapp"}
-        li { "Simply type in the textarea and click \"Add\" to add an entry. Your entries will be sorted and organized by time." }
-        li { "Double click on an entry to edit it." }
-        li { "Prefix a line with \"# \" to make it a heading." }
-        li { "Surround anything within a paragraph with \"*\" to make it bold. " }
-        li { "Surround anything within a paragraph with \"_\" to italicize it. " }
+        article{
+            h2 {"How to use Jwapp"}
+            p { "Simply type in the textarea and click \"Add\" to add an entry. Your entries will be sorted and organized by time." }
+            p { "Double click on an entry to edit it." }
+            p { "Prefix a line with \"# \" to make it a heading." }
+            p { "Surround anything within a paragraph with \"*\" to make it bold. " }
+            p { "Surround anything within a paragraph with \"-\" to italicize it. " }
+            p { "Surround anything within a paragraph with \"_\" to underline it. " }
+        }
     }
 }
 
 #[component(inline_props)]
-pub fn EditModal<'a, G: Html>(cx: Scope, value: RcSignal<String>) -> View<G> {
-    let v = create_signal_from_rc(cx, value.get());
+pub fn EditModal<G: Html>(cx: Scope, id: Uuid) -> View<G> {
+    let app_state = use_context::<AppState>(cx);
+    let (value, tags) = app_state.get_entry_data(id).unwrap();
+    let v = create_signal(cx, value);
+    let t = create_signal(cx, tags);
     let save = move |_| {
-        value.set_rc(v.get());
+        app_state.set_entry_data(id, (*v.get()).clone(), (*t.get()).clone());
     };
     view! {
         cx,
         textarea(class="edit-textarea", maxlength=500, bind:value = v)
+        input(type="text", bind:value=t, placeholder="tags")
         button(class="btn-save",on:click=save) { "Save" }
     }
 }

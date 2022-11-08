@@ -9,6 +9,7 @@ use uuid::Uuid;
 pub struct EntryData {
     pub id: Uuid,
     pub time: NaiveTime,
+    pub tags: RcSignal<String>,
     pub value: RcSignal<String>,
 }
 
@@ -31,5 +32,27 @@ impl AppState {
             .get()
             .iter()
             .for_each(|x| x.1.modify().retain(|y| y.id != id));
+    }
+    pub fn get_entry_data(&self, id: Uuid) -> Option<(String, String)> {
+        let mut entry = None;
+        for g in self.entry_groups.get().values() {
+            for e in g.get().iter() {
+                if e.id == id {
+                    entry = Some(((*e.value.get()).clone(), (*e.tags.get()).clone()));
+                    break;
+                }
+            }
+        }
+        entry
+    }
+    pub fn set_entry_data(&self, id: Uuid, value: String, tags: String) {
+        for g in self.entry_groups.get().values() {
+            for e in g.get().iter() {
+                if e.id == id {
+                    e.value.set(value.clone());
+                    e.tags.set(tags.clone());
+                }
+            }
+        }
     }
 }
