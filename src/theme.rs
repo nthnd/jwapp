@@ -17,8 +17,24 @@ pub fn Theme<G: Html>(cx: Scope) -> View<G> {
         .unwrap()
         .matches();
 
-    let selected_theme = create_signal(cx, String::from("system"));
+    let selected_theme = create_signal(
+        cx,
+        String::from({
+            if device_theme {
+                "night"
+            } else {
+                "day"
+            }
+        }),
+    );
 
+    let change_theme = |_| {
+        selected_theme.set(if *selected_theme.get() == "day" {
+            "night".to_string()
+        } else {
+            "day".to_string()
+        })
+    };
     create_effect(cx, move || {
         let doc = web_sys::window()
             .and_then(|w| w.document())
@@ -26,9 +42,7 @@ pub fn Theme<G: Html>(cx: Scope) -> View<G> {
             .unwrap();
 
         //light
-
-        if (*selected_theme.get() == "system" && !device_theme) || (*selected_theme.get() == "day")
-        {
+        if *selected_theme.get() == "day" {
             css_colors! ( doc,
                 --bg: #f5f5f5;
                 --altbg: #d0d6db;
@@ -41,9 +55,7 @@ pub fn Theme<G: Html>(cx: Scope) -> View<G> {
             );
         }
         // dark
-        else if (*selected_theme.get() == "system" && device_theme)
-            || (*selected_theme.get() == "night")
-        {
+        else {
             css_colors! ( doc,
                 --bg: #292d3e;
                 --altbg: #3b424e;
@@ -58,13 +70,6 @@ pub fn Theme<G: Html>(cx: Scope) -> View<G> {
     });
     view! {
         cx,
-        div{
-            label(for="theme"){"Theme: "}
-            select(name="theme", id="theme", bind:value = selected_theme){
-                option(value="system"){"System"}
-                option(value="day"){"Day"}
-                option(value="night"){"Night"}
-            }
-        }
+        button(class="btn-theme", on:click=change_theme){ (selected_theme.get()) }
     }
 }

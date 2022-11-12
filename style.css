@@ -214,3 +214,11 @@ textarea:focus, input[type="text"]:focus {
     margin-right: 0.5ch;
 }
 
+.btn-theme {
+    background-color: transparent;
+    color: var(--altfg);
+    font-weight: bold;
+    padding: 0.5ch 1ch;
+    border: 1px solid var(--altaccent);
+    text-transform:capitalize ;
+}

@@ -18,5 +18,7 @@ or checkout the [Live Demo](https://nate-sys.github.io/jwapp)
 ## Roadmap
 - [x] Edit and delete previous journal entries  
 - [x] Minimal markdown syntax
-- [ ] Add tag system
+- [x] Add tag system
+- [ ] Navigation system
+- [ ] User theming
 
