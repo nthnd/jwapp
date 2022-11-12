@@ -11,19 +11,15 @@ pub fn EntryGroup<G: Html>(cx: Scope, date: NaiveDate) -> View<G> {
 
     let entries = create_memo(cx, move || {
         let mut es = (*app_state.entry_groups.get().get(&date).unwrap().get()).clone();
-        if let Some(filter) = app_state.filter.get().as_ref() {
-            es = es
-                .into_iter()
-                .filter(|x| {
-                    x.tags
-                        .get()
-                        .split_whitespace()
-                        .collect::<Vec<&str>>()
-                        .iter()
-                        .any(|&w| &w.to_string() == filter)
-                })
-                .collect();
-        } else {
+        if !app_state.filter.get().is_empty() {
+            es.retain(|x| {
+                app_state
+                    .filter
+                    .get()
+                    .iter()
+                    .map(|x| (*x.get()).clone())
+                    .all(|t| (*x.tags.get()).split_whitespace().any(|x| x == t))
+            });
         }
         es
     });

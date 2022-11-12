@@ -2,24 +2,32 @@ use std::collections::HashSet;
 
 use sycamore::builder::prelude::*;
 use sycamore::prelude::*;
+use web_sys::console;
 
 use crate::state::{AppState, EntryData};
 
 use super::modal::{EditModal, Modal};
 
 #[component(inline_props)]
-fn Tag<G: Html>(cx: Scope, tag: String) -> View<G> {
+pub fn Tag<G: Html>(cx: Scope, tag: String) -> View<G> {
     let tag = create_ref(cx, tag);
     let app_state = use_context::<AppState>(cx);
     let apply_filter = move |_| {
-        if let Some(filter) = app_state.filter.get().as_ref() {
-            if filter == &tag.clone() {
-                app_state.filter.set(None)
-            } else {
-                app_state.filter.set(Some(tag.clone()))
-            }
+        console::log_1(&"tag clicked".into());
+        if (*app_state.filter.get())
+            .iter()
+            .any(|x| (*x.get()).clone() == *tag)
+        {
+            app_state
+                .filter
+                .modify()
+                .retain(|x| &(*x.get()).clone() != tag);
+            console::log_1(&format!("{:?}", app_state.filter.get()).into());
         } else {
-            app_state.filter.set(Some(tag.clone()))
+            app_state
+                .filter
+                .modify()
+                .push(create_rc_signal(tag.clone()));
         }
     };
     view! {
@@ -48,7 +56,7 @@ fn Tags<G: Html>(cx: Scope, tags: RcSignal<String>) -> View<G> {
     }
 }
 
-fn format_line(line: &String) -> String {
+fn format_line(line: &str) -> String {
     let mut tag_map: HashSet<char> = HashSet::new();
     let mut new_line = String::new();
     for c in line.chars() {

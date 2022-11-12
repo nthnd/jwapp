@@ -5,6 +5,7 @@ mod theme;
 use state::AppState;
 
 use components::{
+    entry::Tag,
     input::Input,
     list::List,
     modal::{HelpModal, Modal},
@@ -31,7 +32,7 @@ fn main() {
                     true
                 }
             },
-            filter: create_rc_signal(None),
+            filter: create_rc_signal(Vec::new()),
             entry_groups: {
                 let storage = window().unwrap().local_storage().unwrap().unwrap();
                 if let Ok(Some(e)) = storage.get_item(ENTRY_KEY) {
@@ -83,14 +84,9 @@ fn main() {
         let show_help = |_| {
             should_show_help.set(true);
         };
-        let filter_msg = create_memo(cx, move || {
+        let filters = create_memo(cx, move || {
             let app_state = use_context::<AppState>(cx);
-            let x = (*app_state.filter.get()).clone();
-            if let Some(filter) = x {
-                format!("filter: {filter}")
-            } else {
-                String::new()
-            }
+            (*app_state.filter.get()).clone()
         });
 
         view! {
@@ -98,7 +94,6 @@ fn main() {
             nav() {
                 a(href="#"){"Jwapp"}
                 div(class="nav-btns"){
-                    span { (filter_msg.get())}
                     button(on:click=show_help, class="btn-help"){"Help"}
                     Theme()
                 }
@@ -110,6 +105,12 @@ fn main() {
             }
 
             Input()
+            div(class="container-filters") {
+                Indexed(iterable=filters, view = |cx, tag| view!{
+                    cx,
+                    Tag(tag=( *tag.get() ).clone())
+                })
+            }
             (if *should_render.get() {
                 view!{ cx,
                     List()

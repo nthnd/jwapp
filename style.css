@@ -195,5 +195,22 @@ textarea:focus, input[type="text"]:focus {
     background-color: var(--altfg);
     padding: 0 1ch;
     border-radius: 1ch;
+    cursor: pointer;
+}
+.container-filters {
+    display: flex;
+    gap: 1ch;
+    flex-wrap: wrap;
+}
+
+.container-filters > .entry-tag {
+    background-color: transparent;
+    border: 1px solid var(--altfg);
+    color: var(--altfg);
+}
+
+.container-filters > .entry-tag::before {
+    content: "×";
+    margin-right: 0.5ch;
 }
 
