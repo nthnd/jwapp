@@ -1,0 +1,224 @@
+* {
+    box-sizing: border-box;
+}
+
+/* General Html Stuff ------------------------------------------------  */
+
+body {
+    background-color: var(--bg);
+    color: var(--altfg);
+
+    max-width: 70ch;
+    margin: auto;
+    padding: 1em ;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5;
+}
+
+h1, h2, h3 {
+    color: var(--fg);
+}
+
+nav {
+    position: sticky;
+    top: 0;
+    height:3.5em;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: var(--bg);
+}
+
+nav > a {
+    text-decoration: none;
+    color: var(--fg);
+    cursor: pointer;
+    font-size: 1.5em ;
+    font-weight: bold;
+}
+
+li {
+    margin-bottom: 1ch;
+}
+
+/* journal stuff ------------------------------------------------  */
+
+.nav-btns {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+.list-group {
+    display: grid;
+    grid-gap: 2em;
+}
+.btn-delete {
+    padding: 0.2em 1em;
+    background-color: transparent;
+    color: var(--danger);
+    opacity: 0.4;
+    font-weight: bold;
+} 
+.btn-delete:hover{
+    opacity: 1;
+}
+.entry-top {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+.entry-time {
+    color: var(--altaccent);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.entry-content:hover {
+    cursor: pointer;
+}
+.input-area {
+    display: grid;
+    grid-template-columns:  1fr;
+    grid-template-rows: auto 1fr;
+    grid-gap: 1em;
+    padding: 1em 0;
+
+}
+button {
+    cursor: pointer;
+
+    border: none;
+    border-radius: 1ch;
+
+    padding: 1ch 3ch;
+    font: inherit;
+}
+textarea {
+    appearance: none;
+    outline: none;
+
+    border: 1px solid transparent;
+    border-radius: 1ch;
+    background-color: var(--altbg);
+    color: var(--fg);
+    font: inherit;
+
+    resize: none;
+    height: 18ch; 
+    padding: 1em;
+}
+
+input[type="text"] {
+    appearance: none;
+    outline: none;
+
+    border: 1px solid transparent;
+    border-radius: 1ch;
+    background-color: var(--altbg);
+    color: var(--fg);
+    font: inherit;
+    padding: 0.2em 1em;
+
+}
+textarea:focus, input[type="text"]:focus {
+    background-color: transparent; 
+    border-color: var(--border);
+}
+
+
+.input-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-help { 
+    font-weight: bold;
+    color: 1px solid var(--altfg);
+    background-color: var(--bg);
+}
+
+.btn-modal{
+    background-color: var( --altbg );
+    color: var( --altfg );
+}
+.btn-add, .btn-save{
+
+    background-color: var(--accent);
+    color: #ffffff;
+    transition: transform 0.1s ease;
+}
+.btn-add:hover,  .btn-save:hover{
+    transform: scale(1.05);
+}
+
+.modal{
+    display: block;
+    z-index: 2;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    background-color: #000000ba;
+       
+    display: grid;
+    place-content: center;
+}
+
+.modal-content {
+    background-color: var(--bg);
+    padding: 2em;
+    border-radius: 1ch;
+
+    display: grid;
+    grid-gap: 1em;
+    grid-template-columns: 1fr;
+
+    max-width: 60ch;
+}
+.edit-textarea {
+    width: clamp(30ch, 100vw, 50ch);
+}
+
+.container-entry-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1ch;
+}
+.entry-tag {
+    font-size: .8em;
+    font-weight: bold;
+    color: var(--bg);
+    background-color: var(--altfg);
+    padding: 0 1ch;
+    border-radius: 1ch;
+    cursor: pointer;
+}
+.container-filters {
+    display: flex;
+    gap: 1ch;
+    flex-wrap: wrap;
+}
+
+.container-filters > .entry-tag {
+    background-color: transparent;
+    border: 1px solid var(--altfg);
+    color: var(--altfg);
+}
+
+.container-filters > .entry-tag::before {
+    content: "×";
+    margin-right: 0.5ch;
+}
+
+.btn-theme {
+    background-color: transparent;
+    color: var(--altfg);
+    font-weight: bold;
+    padding: 0.5ch 1ch;
+    border: 1px solid var(--altaccent);
+    text-transform:capitalize ;
+}
